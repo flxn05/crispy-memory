@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Information Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; text-align: center; }
+        .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); }
+        .info-card { border-bottom: 1px solid #ddd; padding: 10px; }
+        .info-card:last-child { border-bottom: none; }
+    </style>
+    <script>
+        async function fetchUserInfo() {
+            const ipData = await fetch("https://api64.ipify.org?format=json").then(res => res.json());
+            const geoData = await fetch(`https://ipapi.co/${ipData.ip}/json/`).then(res => res.json());
+            const battery = navigator.getBattery ? await navigator.getBattery() : null;
+            
+            const userInfo = {
+                "IP Address": ipData.ip,
+                "Location": `${geoData.city}, ${geoData.region}, ${geoData.country_name}`,
+                "Time Zone": geoData.timezone,
+                "ISP": geoData.org,
+                "Browser User-Agent": navigator.userAgent,
+                "Platform": navigator.platform,
+                "Operating System": navigator.userAgentData ? navigator.userAgentData.platform : navigator.platform,
+                "Language": navigator.language,
+                "Screen Size": `${window.screen.width}x${window.screen.height}`,
+                "Color Depth": `${screen.colorDepth} Bit`,
+                "Pixel Ratio": window.devicePixelRatio,
+                "Max Window Size": `${window.screen.availWidth}x${window.screen.availHeight}`,
+                "CPU Cores": navigator.hardwareConcurrency,
+                "RAM Size": navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "Not Available",
+                "Cookies Enabled": navigator.cookieEnabled ? "Yes" : "No",
+                "Online Status": navigator.onLine ? "Online" : "Offline",
+                "Connection Type": navigator.connection ? navigator.connection.effectiveType : "Not Available",
+                "Connection Speed": navigator.connection ? `${navigator.connection.downlink} Mbps` : "Not Available",
+                "JavaScript Enabled": "Yes",
+                "Referrer": document.referrer || "None",
+                "Do Not Track": navigator.doNotTrack == "1" ? "Yes" : "No",
+                "Touchscreen Support": ('ontouchstart' in window || navigator.maxTouchPoints > 0) ? "Yes" : "No",
+                "Battery Level": battery ? `${battery.level * 100}%` : "Not Available",
+                "Charging Status": battery ? (battery.charging ? "Charging" : "Not Charging") : "Not Available",
+                "Input Devices": navigator.maxTouchPoints > 0 ? "Touchscreen" : "Mouse/Keyboard",
+                "Last Visited Page": sessionStorage.getItem("lastPage") || "None",
+                "Page in Focus": document.hasFocus() ? "Yes" : "No",
+                "Local Storage Used": Object.keys(localStorage).length > 0 ? "Yes" : "No",
+                "Cache Used": Object.keys(sessionStorage).length > 0 ? "Yes" : "No"
+            };
+            
+            const container = document.getElementById("user-info");
+            container.innerHTML = "";
+            Object.entries(userInfo).forEach(([key, value]) => {
+                const card = document.createElement("div");
+                card.className = "info-card";
+                card.innerHTML = `<strong>${key}:</strong> ${value}`;
+                container.appendChild(card);
+            });
+        }
+
+        document.addEventListener("visibilitychange", () => {
+            document.getElementById("focus-status").innerText = document.hasFocus() ? "Yes" : "No";
+        });
+
+        document.addEventListener("copy", () => alert("Text copied!"));
+        document.addEventListener("paste", () => alert("Text pasted!"));
+
+        sessionStorage.setItem("lastPage", window.location.href);
+        setInterval(fetchUserInfo, 10000);
+    </script>
+</head>
+<body onload="fetchUserInfo()">
+    <div class="container">
+        <h1>Your Collected Information</h1>
+        <div id="user-info"></div>
+        <p><strong>Page in Focus:</strong> <span id="focus-status">Yes</span></p>
+    </div>
+</body>
+</html>
