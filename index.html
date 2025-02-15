@@ -12,7 +12,6 @@
             background: linear-gradient(135deg, #667eea, #764ba2); 
             color: white; 
             text-align: center; 
-            height: 100vh;
         }
         .container { 
             max-width: 900px; 
@@ -20,20 +19,22 @@
             background: rgba(255, 255, 255, 0.1); 
             padding: 20px; 
             border-radius: 10px; 
-            box-shadow: 0px 0px 15px rgba(0,0,0,0.2);
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.2); 
         }
         h1 {
             font-size: 2em;
             margin-bottom: 20px;
         }
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            text-align: left;
+        }
         .info-card { 
             background: rgba(255, 255, 255, 0.2); 
             border-radius: 8px; 
             padding: 15px; 
-            margin: 10px 0; 
-            text-align: left; 
         }
         .info-card strong { 
             color: #ffdd57; 
@@ -135,7 +136,7 @@
 <body onload="fetchUserInfo()">
     <div class="container">
         <h1>Ultimate User Information Tracker</h1>
-        <div id="user-info"></div>
+        <div id="user-info" class="info-grid"></div>
         <button class="refresh-button" onclick="fetchUserInfo()">Refresh Data</button>
     </div>
 </body>
