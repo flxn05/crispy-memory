@@ -29,6 +29,12 @@
             gap: 10px;
             text-align: left;
         }
+        @media (max-width: 768px) {
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+            
+        }
         .info-card { 
             background: rgba(150, 150, 150, 0.795); 
             border-radius: 8px; 
@@ -119,9 +125,9 @@
 </head>
 <body onload="fetchUserInfo()">
     <div class="container">
-        <h1>Ultimate User Information Tracker</h1>
-        <div id="user-info" class="info-grid"></div>
-        <button class="refresh-button" onclick="fetchUserInfo()">Refresh Data</button>
+        <div id="user-info" class="info-grid">
+            <div class="info-card">loading data</div>
+        </div>
     </div>
 </body>
 </html>
